@@ -11,7 +11,7 @@ import torch
 import torch.utils.data as data
 import tqdm
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DATA_DIR = '/root/data'
 
 
 def pc_normalize(pc):
@@ -30,23 +30,23 @@ class ModelNet40Cls(data.Dataset):
         self.transforms = transforms
 
         self.set_num_points(num_points)
-        self._cache = os.path.join(BASE_DIR, "modelnet40_normal_resampled_cache")
+        self._cache = os.path.join(DATA_DIR, "modelnet40_normal_resampled_cache")
 
         if not osp.exists(self._cache):
             self.folder = "modelnet40_normal_resampled"
-            self.data_dir = os.path.join(BASE_DIR, self.folder)
+            self.data_dir = os.path.join(DATA_DIR, self.folder)
             self.url = (
                 "https://shapenet.cs.stanford.edu/media/modelnet40_normal_resampled.zip"
             )
 
             if download and not os.path.exists(self.data_dir):
-                zipfile = os.path.join(BASE_DIR, os.path.basename(self.url))
+                zipfile = os.path.join(DATA_DIR, os.path.basename(self.url))
                 subprocess.check_call(
-                    shlex.split("curl {} -o {}".format(self.url, zipfile))
+                    shlex.split("curl {} -k -o {}".format(self.url, zipfile))
                 )
 
                 subprocess.check_call(
-                    shlex.split("unzip {} -d {}".format(zipfile, BASE_DIR))
+                    shlex.split("unzip {} -d {}".format(zipfile, DATA_DIR))
                 )
 
                 subprocess.check_call(shlex.split("rm {}".format(zipfile)))
