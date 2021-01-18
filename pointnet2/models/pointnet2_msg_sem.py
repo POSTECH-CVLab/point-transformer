@@ -65,7 +65,7 @@ class PointNet2SemSegMSG(PointNet2SemSegSSG):
         self.FP_modules.append(PointnetFPModule(mlp=[512 + c_out_1, 512, 512]))
         self.FP_modules.append(PointnetFPModule(mlp=[c_out_3 + c_out_2, 512, 512]))
 
-        self.fc_lyaer = nn.Sequential(
+        self.fc_layer = nn.Sequential(
             nn.Conv1d(128, 128, kernel_size=1, bias=False),
             nn.BatchNorm1d(128),
             nn.ReLU(True),

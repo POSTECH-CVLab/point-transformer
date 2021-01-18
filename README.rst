@@ -1,7 +1,7 @@
 Point-Transformer PyTorch
 ============================
 
-* Implemention of Point Transformer `https://arxiv.org/abs/2012.09164`_.
+* Implemention of `Point Transformer <https://arxiv.org/abs/2012.09164>`_.
 
 * Code based on PointNet2 Pytorch repository `https://github.com/erikwijmans/Pointnet2_PyTorch`_.
 
