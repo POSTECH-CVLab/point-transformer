@@ -61,7 +61,7 @@ class TransitionDown(nn.Module):
         neighbors = kNN(p1, sampled_index, self.k) # "neighbors" is a (sampled_n, k) shaped numpy array.
         
         # 2-1: Apply MLP onto each feature
-        mlp_x = self.mlp_layer(x) # "y" is a (n, out_channels) shaped torch Tensor.
+        mlp_x = self.mlp_layer(x) # "mlp_x" is a (n, out_channels) shaped torch Tensor.
         
         # 2-2: Extract features based on neighbors
         features = []
