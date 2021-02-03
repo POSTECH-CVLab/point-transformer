@@ -5,5 +5,6 @@ h5py
 
 hydra-core==0.11.3
 pytorch-lightning==0.7.1
+open3d==0.12.0.0
 
 ./pointnet2_ops_lib/.
