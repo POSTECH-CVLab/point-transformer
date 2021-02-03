@@ -11,8 +11,9 @@ def kNN(query, dataset, k):
         k: int
     
     outputs
-        neighbors: (B, N0, k) shaped torch Tensor.
+        neighbors: (B * N0, k) shaped torch Tensor.
                    Each row is the indices of a neighboring points.
+                   It is flattened along batch dimension.
     '''
     assert query.is_cuda and dataset.is_cuda, "Input tensors should be gpu tensors."
     assert query.dim() == 3 and dataset.dim(
@@ -38,8 +39,10 @@ def kNN(query, dataset, k):
         if not status:
             raise Exception("Index failed.")
         neighbors, _ = nns.knn_search(_query, k)
+        # calculate prefix sum of indices
         neighbors += N1 * i
         indices.append(torch.utils.dlpack.from_dlpack(neighbors.to_dlpack()))
 
+    # flatten indices
     indices = torch.cat(indices, dim=0)
     return indices
