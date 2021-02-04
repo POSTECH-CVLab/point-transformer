@@ -19,8 +19,6 @@ pointnet2.egg-info/
 pointnet2/data/modelnet40_normal_resampled/
 pointnet2/data/modelnet40_normal_resampled_cache/
 pointnet2/data/modelnet40_ply_hdf5_2048/
-pointnet2/models/.ipynb_checkpoints/
-=======
 >>>>>>> 313c33d974af7fe9eb2701be23de34509e7fb8e7
 .ipynb_checkpoints/
 pointnet2/models/test.py
