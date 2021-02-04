@@ -35,13 +35,13 @@ class PointTransformerLayer(nn.Module):
         # position encoding 
         self.pos_mlp = nn.Sequential(
             nn.Linear(3, pos_mlp_hidden),
-            nn.ReLU(),
+            nn.ReLU(in_place=True),
             nn.Linear(pos_mlp_hidden, dim)
         )
 
         self.attn_mlp = nn.Sequential(
             nn.Linear(dim, dim * attn_mlp_hidden),
-            nn.ReLU(),
+            nn.ReLU(in_place=True),
             nn.Linear(dim * attn_mlp_hidden, dim),
         )
 
