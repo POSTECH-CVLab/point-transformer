@@ -1,4 +1,5 @@
 from torch import nn, einsum
+import numpy as np
 #import pytorch_lightning as pl
 #from einops import repeat
 
@@ -76,3 +77,26 @@ class PointTransformerLayer(nn.Module):
         agg = einsum('b i j d, b i j d -> b i d', attn, v)
                 
         return agg
+    
+if __name__ == "__main__":
+
+
+    attn = PointTransformerLayer(
+        dim = 32,
+        pos_mlp_hidden = 64,
+        attn_mlp_hidden = 4
+    )
+
+    pt_transformer = PointTransformerBlock(
+        dim = 32,
+        pos_mlp_hidden = 64,
+        attn_mlp_hidden = 4
+    )
+
+    x = torch.randn(1, 16, 32)
+    pos = torch.randn(1, 16, 3)
+
+    x_out = attn.forward(x, pos)
+    x_out2 = pt_transformer(x, pos)
+
+    print(x_out2[0].shape)
