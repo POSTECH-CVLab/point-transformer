@@ -9,9 +9,9 @@ class PointTransformerBlock(nn.Module):
 
     def __init__(self, dim, pos_mlp_hidden = 64, attn_mlp_hidden = 4):
         super().__init__()
-        self.prev_linear = nn.Linear(dim, dim)
+        self.prev_linear = nn.Linear(dim, dim, bias = False)
         self.attn = PointTransformerLayer(dim = dim, pos_mlp_hidden = pos_mlp_hidden, attn_mlp_hidden = attn_mlp_hidden)
-        self.final_linear = nn.Linear(dim, dim)
+        self.final_linear = nn.Linear(dim, dim, bias = False)
         
     def forward(self, x, pos):
         
