@@ -67,7 +67,6 @@ class PointTransformerBlock(nn.Module):
         q = self.to_q(x)
         k = idx_pt(self.to_k(x), knn_idx)
         v = idx_pt(self.to_v(x), knn_idx)
-        print(q.size(),k.size(),v.size())
         
         pos_enc = self.pos_mlp(pos[:,:,None]-knn_xyz)
 
@@ -76,7 +75,7 @@ class PointTransformerBlock(nn.Module):
 
         agg = einsum('b i j d, b i j d -> b i d', attn, v+pos_enc)
 
-        agg = self.final_linear(res) + x_pre
+        agg = self.final_linear(agg) + x_pre
 
         return agg
         
