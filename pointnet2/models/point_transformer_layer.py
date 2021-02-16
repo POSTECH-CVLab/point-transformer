@@ -1,18 +1,14 @@
+#Reference : https://github.com/qq456cvb/Point-Transformers/blob/master/models/Hengshuang/transformer.py
+
 from torch import nn, einsum
 import numpy as np
-#import pytorch_lightning as pl
-#from einops import repeat
 
-# classes
 import torch 
 from torch import nn, einsum
 import torch.nn.functional as F
 import numpy as np
 import pytorch_lightning as pl
 #from pointnet2.utils.knn import kNN
-
-
-#from einops import repeat
 
 # classes
 
