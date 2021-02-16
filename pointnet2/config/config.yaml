@@ -1,5 +1,5 @@
 defaults:
-    - task: cls
+    - task: sem
     - model: ssg
     - task_model: ${defaults.0.task}-${defaults.1.model}
 
@@ -8,7 +8,7 @@ hydra:
     dir: outputs
 
 gpus:
-    - 0
+    - 2
 
 optimizer: ???
 
