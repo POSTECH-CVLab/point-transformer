@@ -39,7 +39,6 @@ class PointTransformerBlock(nn.Module):
         self.to_k = nn.Linear(dim, dim, bias=False)
         self.to_v = nn.Linear(dim, dim, bias=False)
         
-        
         # position encoding 
         self.pos_mlp = nn.Sequential(
             nn.Linear(3, dim),
@@ -79,9 +78,7 @@ class PointTransformerBlock(nn.Module):
 
         return agg
         
-    
 if __name__ == "__main__":
-
 
     attn = PointTransformerBlock(
         dim = 6, k = 16
@@ -93,4 +90,3 @@ if __name__ == "__main__":
     x_out = attn.forward(x, pos)
 
     print(x_out.shape)
-
