@@ -1,6 +1,10 @@
 import torch
 import torch.nn as nn
-from pointnet2.utils.knn import kNN, kNN_torch, index_points
+import sys
+
+sys.path.append("../utils")
+
+from knn import kNN, kNN_torch, index_points
 from pointnet2_ops import pointnet2_utils
 
 
@@ -64,7 +68,7 @@ class TransitionDown(nn.Module):
 
 
 if __name__ == "__main__":
-    from pointnet2.utils.timer import Timer
+    from timer import Timer
     import numpy as np
 
     B, N, k, sampling_ratio = 2, 1024, 16, 0.25
