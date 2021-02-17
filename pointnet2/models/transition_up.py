@@ -48,12 +48,12 @@ if __name__ == '__main__':
     in_channels = 128
     out_channels = 64
 
-    x1 = torch.randn(B, N, in_channels).cuda(2)
-    p1 = torch.randn(B, N, 3).cuda(2)
-    x2 = torch.randn(B, M, out_channels).cuda(2)
-    p2 = torch.randn(B, M, 3).cuda(2)
+    x1 = torch.randn(B, N, in_channels).cuda()
+    p1 = torch.randn(B, N, 3).cuda()
+    x2 = torch.randn(B, M, out_channels).cuda()
+    p2 = torch.randn(B, M, 3).cuda()
 
-    trans_up = TransitionUp(in_channels, out_channels).cuda(2)
+    trans_up = TransitionUp(in_channels, out_channels).cuda()
     y, p3 = trans_up(x1, p1, x2, p2)
 
     assert torch.all(torch.eq(p3, p2))
