@@ -23,3 +23,4 @@ pointnet2/data/modelnet40_ply_hdf5_2048/
 .ipynb_checkpoints/
 pointnet2/models/test.py
 outputs/
+.vscode
