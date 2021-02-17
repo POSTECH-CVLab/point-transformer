@@ -2,6 +2,7 @@ from torch import nn, einsum
 import numpy as np
 #import pytorch_lightning as pl
 #from einops import repeat
+import torch
 
 # classes
 
@@ -35,13 +36,13 @@ class PointTransformerLayer(nn.Module):
         # position encoding 
         self.pos_mlp = nn.Sequential(
             nn.Linear(3, pos_mlp_hidden),
-            nn.ReLU(in_place=True),
+            nn.ReLU(inplace=True),
             nn.Linear(pos_mlp_hidden, dim)
         )
 
         self.attn_mlp = nn.Sequential(
             nn.Linear(dim, dim * attn_mlp_hidden),
-            nn.ReLU(in_place=True),
+            nn.ReLU(inplace=True),
             nn.Linear(dim * attn_mlp_hidden, dim),
         )
 
@@ -99,4 +100,6 @@ if __name__ == "__main__":
     x_out = attn.forward(x, pos)
     x_out2 = pt_transformer(x, pos)
 
+    print(x.shape)
     print(x_out2[0].shape)
+    print(x_out2[1].shape)
