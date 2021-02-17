@@ -1,3 +1,4 @@
+import torch
 import torch.nn as nn
 
 from pointnet2_ops import pointnet2_utils

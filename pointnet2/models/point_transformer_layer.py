@@ -28,7 +28,7 @@ def idx_pt(pts, idx):
         
         
 class PointTransformerBlock(nn.Module):
-    def __init__(self, dim, k):
+    def __init__(self, dim, k=16):
         super().__init__()
         
         self.prev_linear = nn.Linear(dim, dim)
@@ -76,7 +76,7 @@ class PointTransformerBlock(nn.Module):
 
         agg = self.final_linear(agg) + x_pre
 
-        return agg
+        return agg, pos
         
 if __name__ == "__main__":
 

@@ -4,7 +4,7 @@ import sys
 
 sys.path.append("../utils")
 
-from knn import kNN, kNN_torch, index_points
+from ..utils.knn import kNN_torch, index_points
 from pointnet2_ops import pointnet2_utils
 
 
