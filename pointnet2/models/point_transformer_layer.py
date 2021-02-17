@@ -1,105 +1,92 @@
+#Reference : https://github.com/qq456cvb/Point-Transformers/blob/master/models/Hengshuang/transformer.py
+
 from torch import nn, einsum
 import numpy as np
-#import pytorch_lightning as pl
-#from einops import repeat
-import torch
+
+import torch 
+from torch import nn, einsum
+import torch.nn.functional as F
+import numpy as np
+import pytorch_lightning as pl
+#from pointnet2.utils.knn import kNN
 
 # classes
 
-class PointTransformerBlock(nn.Module):
 
-    def __init__(self, dim, pos_mlp_hidden = 64, attn_mlp_hidden = 4):
+def square_dist(p1, p2):
+    return torch.sum((p1[:,:,None]-p2[:,None])**2, dim=-1)
+
+def idx_pt(pts, idx):
+    raw_size  = idx.size()
+    idx = idx.reshape(raw_size[0], -1)
+    #print(idx.size())
+    #print(pts.size())
+    res = torch.gather(pts, 1, idx[..., None].expand(-1, -1, pts.size(-1)))
+    return res.reshape(*raw_size,-1)
+
+
+        
+        
+class PointTransformerBlock(nn.Module):
+    def __init__(self, dim, k):
         super().__init__()
+        
         self.prev_linear = nn.Linear(dim, dim)
-        self.attn = PointTransformerLayer(dim = dim, pos_mlp_hidden = pos_mlp_hidden, attn_mlp_hidden = attn_mlp_hidden)
-        self.final_linear = nn.Linear(dim, dim)
-        
-    def forward(self, x, pos):
-        
-        x = self.prev_linear(x) 
-        x_out = self.attn(x, pos)
-        x_out = self.final_linear(x_out)
-        x_out += x
-        return x_out, pos
-        
-        
-class PointTransformerLayer(nn.Module):
-    def __init__(self, dim, pos_mlp_hidden = 64, attn_mlp_hidden = 4):
-        super().__init__()
-        #self.to_qkv = nn.Linear(dim, dim * 3, bias = False)
-        
-        self.to_q = nn.Linear(dim, dim, bias = False)
-        self.to_k = nn.Linear(dim, dim, bias = False)
-        self.to_v = nn.Linear(dim, dim, bias = False)
-        
+
+        self.k = k
+
+        self.to_q = nn.Linear(dim, dim, bias=False)
+        self.to_k = nn.Linear(dim, dim, bias=False)
+        self.to_v = nn.Linear(dim, dim, bias=False)
         
         # position encoding 
         self.pos_mlp = nn.Sequential(
-            nn.Linear(3, pos_mlp_hidden),
-            nn.ReLU(inplace=True),
-            nn.Linear(pos_mlp_hidden, dim)
+            nn.Linear(3, dim),
+            nn.ReLU(True),
+            nn.Linear(dim, dim)
         )
 
         self.attn_mlp = nn.Sequential(
-            nn.Linear(dim, dim * attn_mlp_hidden),
-            nn.ReLU(inplace=True),
-            nn.Linear(dim * attn_mlp_hidden, dim),
+            nn.Linear(dim, dim),
+            nn.ReLU(True),
+            nn.Linear(dim, dim)
         )
 
+        self.final_linear = nn.Linear(dim, dim)
+
     def forward(self, x, pos):
-        #n = x.shape[1]
-
         # queries, keys, values
-        #q, k, v = self.to_qkv(x).chunk(3, dim = -1)
-        #print(q.size(), k.size(), v.size())
-        
+
+        x_pre = x
+
+        dist = square_dist(pos, pos)
+        knn_idx = dist.argsort()[:,:,:self.k]
+        knn_xyz = idx_pt(pos, knn_idx)
+
         q = self.to_q(x)
-        k = self.to_k(x)
-        v = self.to_v(x)
+        k = idx_pt(self.to_k(x), knn_idx)
+        v = idx_pt(self.to_v(x), knn_idx)
         
-        # relative positional embeddings(position encoding)
-        rel_pos = pos[:, :, None] - pos[:, None, :]
-        rel_pos_emb = self.pos_mlp(rel_pos)
+        pos_enc = self.pos_mlp(pos[:,:,None]-knn_xyz)
 
-        # use subtraction of queries to keys. i suppose this is a better inductive bias for point clouds than dot product
-        qk_rel = q[:, :, None] - k[:, None, :]
+        attn = self.attn_mlp(q[:,:,None]-k+pos_enc)
+        attn = F.softmax(attn / np.sqrt(k.size(-1)), dim=-2)
 
-        # use attention mlp, making sure to add relative positional embedding first
-        sim = self.attn_mlp(qk_rel + rel_pos_emb).squeeze(dim = -1)
+        agg = einsum('b i j d, b i j d -> b i d', attn, v+pos_enc)
 
-        # expand transformed features and add relative positional embeddings
-        # ev = repeat(v, 'b j d -> b i j d', i = n)
-        v = v + rel_pos_emb
+        agg = self.final_linear(agg) + x_pre
 
-        # attention
-        attn = sim.softmax(dim = -2)
-        
-        # aggregate
-        agg = einsum('b i j d, b i j d -> b i d', attn, v)
-                
         return agg
-    
+        
 if __name__ == "__main__":
 
-
-    attn = PointTransformerLayer(
-        dim = 32,
-        pos_mlp_hidden = 64,
-        attn_mlp_hidden = 4
+    attn = PointTransformerBlock(
+        dim = 6, k = 16
     )
 
-    pt_transformer = PointTransformerBlock(
-        dim = 32,
-        pos_mlp_hidden = 64,
-        attn_mlp_hidden = 4
-    )
-
-    x = torch.randn(1, 16, 32)
-    pos = torch.randn(1, 16, 3)
+    x = torch.randn(24, 1000, 6)
+    pos = torch.randn(24, 1000, 3)
 
     x_out = attn.forward(x, pos)
-    x_out2 = pt_transformer(x, pos)
 
-    print(x.shape)
-    print(x_out2[0].shape)
-    print(x_out2[1].shape)
+    print(x_out.shape)
