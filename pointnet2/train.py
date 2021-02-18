@@ -30,7 +30,7 @@ def hydra_params_to_dotdict(hparams):
 def main(cfg):
     model = hydra.utils.instantiate(cfg.task_model, hydra_params_to_dotdict(cfg))
 
-    early_stop_callback = pl.callbacks.EarlyStopping(patience=5)
+    early_stop_callback = pl.callbacks.EarlyStopping(patience=20)
     checkpoint_callback = pl.callbacks.ModelCheckpoint(
         monitor="val_acc",
         mode="max",
@@ -40,12 +40,15 @@ def main(cfg):
         ),
         verbose=True,
     )
+
+    tb_logger = TensorBoardLogger("logs", cfg.task_model.name)
     trainer = pl.Trainer(
         gpus=list(cfg.gpus),
         max_epochs=cfg.epochs,
         early_stop_callback=early_stop_callback,
         checkpoint_callback=checkpoint_callback,
         distributed_backend=cfg.distrib_backend,
+        logger=tb_logger,
     )
 
     trainer.fit(model)

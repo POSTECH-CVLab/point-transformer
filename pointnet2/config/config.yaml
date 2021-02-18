@@ -8,7 +8,7 @@ hydra:
     dir: outputs
 
 gpus:
-    - 2
+    - 0
 
 optimizer: ???
 

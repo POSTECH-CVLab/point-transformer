@@ -1,0 +1,4 @@
+model:
+  channels: "32.64.128.256.512.256.40"
+  k: 16
+  sampling_ratio: 0.25
