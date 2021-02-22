@@ -1,0 +1,3 @@
+task_model:
+    class: pointnet2.models.Point_Transformer_SemSeg
+    name: sem-trans

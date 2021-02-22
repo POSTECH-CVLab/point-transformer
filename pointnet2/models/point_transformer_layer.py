@@ -1,13 +1,18 @@
 #Reference : https://github.com/qq456cvb/Point-Transformers/blob/master/models/Hengshuang/transformer.py
+import sys
 
 from torch import nn, einsum
 import numpy as np
+
+
+sys.path.append("../utils")
 
 import torch 
 from torch import nn, einsum
 import torch.nn.functional as F
 import numpy as np
 import pytorch_lightning as pl
+from pointnet2.utils.knn import kNN_torch, index_points
 #from pointnet2.utils.knn import kNN
 
 # classes
@@ -19,8 +24,6 @@ def square_dist(p1, p2):
 def idx_pt(pts, idx):
     raw_size  = idx.size()
     idx = idx.reshape(raw_size[0], -1)
-    #print(idx.size())
-    #print(pts.size())
     res = torch.gather(pts, 1, idx[..., None].expand(-1, -1, pts.size(-1)))
     return res.reshape(*raw_size,-1)
 
@@ -58,10 +61,9 @@ class PointTransformerBlock(nn.Module):
         # queries, keys, values
 
         x_pre = x
-
-        dist = square_dist(pos, pos)
-        knn_idx = dist.argsort()[:,:,:self.k]
-        knn_xyz = idx_pt(pos, knn_idx)
+        
+        knn_idx = kNN_torch(pos, pos, self.k)
+        knn_xyz = index_points(pos, knn_idx)
 
         q = self.to_q(x)
         k = idx_pt(self.to_k(x), knn_idx)
