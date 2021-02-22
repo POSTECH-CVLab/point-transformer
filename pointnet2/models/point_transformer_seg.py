@@ -41,6 +41,7 @@ class Point_Transformer_SemSeg(PointNet2ClassificationSSG):
     def forward(self, pointcloud):
 
         xyz, features = self._break_up_pc(pointcloud)
+        features = features.transpose(1,2).contiguous()
 
         l_xyz, l_features = [xyz], [features]
 
