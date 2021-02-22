@@ -1,7 +1,9 @@
 #Reference : https://github.com/qq456cvb/Point-Transformers/blob/master/models/Hengshuang/transformer.py
+import sys
 
 from torch import nn, einsum
 import numpy as np
+
 
 sys.path.append("../utils")
 
@@ -10,7 +12,7 @@ from torch import nn, einsum
 import torch.nn.functional as F
 import numpy as np
 import pytorch_lightning as pl
-from knn import kNN_torch, index_points
+from pointnet2.utils.knn import kNN_torch, index_points
 #from pointnet2.utils.knn import kNN
 
 # classes
@@ -59,11 +61,9 @@ class PointTransformerBlock(nn.Module):
         # queries, keys, values
 
         x_pre = x
-
-        #dist = square_dist(pos, pos)
-        #knn_idx = dist.argsort()[:,:,:self.k]
-	knn_idx = knn_torch(pos, pos, self.k)        
-	knn_xyz = index_points(pos, knn_idx)
+        
+        knn_idx = kNN_torch(pos, pos, self.k)
+        knn_xyz = index_points(pos, knn_idx)
 
         q = self.to_q(x)
         k = idx_pt(self.to_k(x), knn_idx)
