@@ -51,7 +51,6 @@ class BNMomentumScheduler(lr_sched.LambdaLR):
 lr_clip = 1e-5
 bnm_clip = 1e-2
 
-
 class PointNet2ClassificationSSG(pl.LightningModule):
     def __init__(self, hparams):
         super().__init__()
@@ -140,7 +139,6 @@ class PointNet2ClassificationSSG(pl.LightningModule):
         logits = self.forward(pc)
         loss = F.cross_entropy(logits, labels)
         acc = (torch.argmax(logits, dim=1) == labels).float().mean()
-
         return dict(val_loss=loss, val_acc=acc)
 
     def validation_end(self, outputs):
