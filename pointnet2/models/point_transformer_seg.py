@@ -4,12 +4,13 @@ import torch.nn as nn
 from pointnet2_ops.pointnet2_modules import PointnetFPModule, PointnetSAModule
 from torch.utils.data import DataLoader
 
-from pointnet2.data import Indoor3DSemSeg
+from pointnet2.data import Indoor3DSemSeg, PartNormalDataset
 from pointnet2.models.pointnet2_ssg_cls import PointNet2ClassificationSSG
 
 from pointnet2.models.point_transformer_layer import PointTransformerBlock
 from pointnet2.models.transition_down import TransitionDown
 from pointnet2.models.transition_up import TransitionUp
+
 
 class Point_Transformer_SemSeg(PointNet2ClassificationSSG):
     def _build_model(self, dim = [6,32,64,128,256,512], output_dim=13, pos_mlp_hidden=64, attn_mlp_hidden=4, k = 16, sampling_ratio = 0.25):
@@ -75,4 +76,36 @@ class Point_Transformer_SemSeg(PointNet2ClassificationSSG):
     def prepare_data(self):
         self.train_dset = Indoor3DSemSeg(self.hparams["num_points"], train=True, download=False)
         self.val_dset = Indoor3DSemSeg(self.hparams["num_points"], train=False, download=False)
+
+
+class Point_Transformer_PartSeg(Point_Transformer_SemSeg):
+    def _build_model(self, dim = [3,32,64,128,256,512], output_dim=50, pos_mlp_hidden=64, attn_mlp_hidden=4, k = 16, sampling_ratio = 0.25):
+        self.Encoder = nn.ModuleList()
+        for i in range(len(dim)-1):
+            if i == 0:
+                self.Encoder.append(nn.Linear(dim[i], dim[i+1], bias=False))
+            else:
+                self.Encoder.append(TransitionDown(dim[i], dim[i+1], k, sampling_ratio, fast=True))
+            self.Encoder.append(PointTransformerBlock(dim[i+1], k))
+        self.Decoder = nn.ModuleList()
+
+        for i in range(5,0,-1):
+            if i == 5:
+                self.Decoder.append(nn.Linear(dim[i], dim[i], bias=False))
+            else:
+                self.Decoder.append(TransitionUp(dim[i+1], dim[i]))
+
+            self.Decoder.append(PointTransformerBlock(dim[i], k))
+
+        self.fc_layer = nn.Sequential(
+            nn.Conv1d(dim[1], dim[1], kernel_size=1, bias=False),
+            nn.BatchNorm1d(dim[1]),
+            nn.ReLU(inplace=True),
+            nn.Dropout(0.5),
+            nn.Conv1d(dim[1], output_dim, kernel_size=1),
+        )
+
+    def prepare_data(self):
+        self.train_dset = PartNormalDataset(self.hparams["num_points"], 'train')
+        self.val_dset = PartNormalDataset(self.hparams["num_points"], 'val')
 
