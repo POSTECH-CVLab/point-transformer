@@ -6,6 +6,7 @@ from torch.utils.data import DataLoader
 
 from pointnet2.data import Indoor3DSemSeg, PartNormalDataset
 from pointnet2.models.pointnet2_ssg_cls import PointNet2ClassificationSSG
+from pointnet2.utils.timer import Timer
 
 from pointnet2.models.point_transformer_layer import PointTransformerBlock
 from pointnet2.models.transition_down import TransitionDown
@@ -40,7 +41,8 @@ class Point_Transformer_SemSeg(PointNet2ClassificationSSG):
         )
 
     def forward(self, pointcloud):
-
+        timer = Timer("forward")
+        timer.tic()
         xyz, features = self._break_up_pc(pointcloud)
         features = features.transpose(1,2).contiguous()
 
@@ -70,8 +72,9 @@ class Point_Transformer_SemSeg(PointNet2ClassificationSSG):
                 l_features[D_n-i] = self.Decoder[2*i+1](l_features[D_n-i], l_xyz[D_n-i])
                 
         del l_features[0], l_features[1:], l_xyz
-
-        return self.fc_layer(l_features[0].transpose(1,2).contiguous())
+        out = self.fc_layer(l_features[0].transpose(1,2).contiguous())
+        timer.toc()
+        return out
 
     def prepare_data(self):
         self.train_dset = Indoor3DSemSeg(self.hparams["num_points"], train=True, download=False)

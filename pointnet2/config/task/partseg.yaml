@@ -7,6 +7,6 @@ optimizer:
     decay_step: 2e4
 
 
-num_points: 4096
+num_points: 2500
 epochs: 200
 batch_size: 32
