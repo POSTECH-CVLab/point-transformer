@@ -83,30 +83,7 @@ class Point_Transformer_SemSeg(PointNet2ClassificationSSG):
 
 class Point_Transformer_PartSeg(Point_Transformer_SemSeg):
     def _build_model(self, dim = [3,32,64,128,256,512], output_dim=50, pos_mlp_hidden=64, attn_mlp_hidden=4, k = 16, sampling_ratio = 0.25):
-        self.Encoder = nn.ModuleList()
-        for i in range(len(dim)-1):
-            if i == 0:
-                self.Encoder.append(nn.Linear(dim[i], dim[i+1], bias=False))
-            else:
-                self.Encoder.append(TransitionDown(dim[i], dim[i+1], k, sampling_ratio, fast=True))
-            self.Encoder.append(PointTransformerBlock(dim[i+1], k))
-        self.Decoder = nn.ModuleList()
-
-        for i in range(5,0,-1):
-            if i == 5:
-                self.Decoder.append(nn.Linear(dim[i], dim[i], bias=False))
-            else:
-                self.Decoder.append(TransitionUp(dim[i+1], dim[i]))
-
-            self.Decoder.append(PointTransformerBlock(dim[i], k))
-
-        self.fc_layer = nn.Sequential(
-            nn.Conv1d(dim[1], dim[1], kernel_size=1, bias=False),
-            nn.BatchNorm1d(dim[1]),
-            nn.ReLU(inplace=True),
-            nn.Dropout(0.5),
-            nn.Conv1d(dim[1], output_dim, kernel_size=1),
-        )
+      super(Point_Transformer_PartSeg, self)._build_model(dim, output_dim, pos_mlp_hidden, attn_mlp_hidden, k, sampling_ratio)
 
     def prepare_data(self):
         self.train_dset = PartNormalDataset(self.hparams["num_points"], 'train')
