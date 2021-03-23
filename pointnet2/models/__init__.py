@@ -2,6 +2,6 @@ from pointnet2.models.pointnet2_msg_cls import PointNet2ClassificationMSG
 from pointnet2.models.pointnet2_msg_sem import PointNet2SemSegMSG
 from pointnet2.models.pointnet2_ssg_cls import PointNet2ClassificationSSG
 from pointnet2.models.pointnet2_ssg_sem import PointNet2SemSegSSG
-from pointnet2.models.point_transformer_seg import Point_Transformer_SemSeg
+from pointnet2.models.point_transformer_seg import Point_Transformer_SemSeg, Point_Transformer_PartSeg
 from pointnet2.models.point_transformer import PointTransformerClassification
 

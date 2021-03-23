@@ -31,12 +31,13 @@ def main(cfg):
     model = hydra.utils.instantiate(cfg.task_model, hydra_params_to_dotdict(cfg))
 
     early_stop_callback = pl.callbacks.EarlyStopping(patience=20)
+    path_format = "{epoch}-{val_loss:.2f}-{%s:.3f}" % cfg.metric
     checkpoint_callback = pl.callbacks.ModelCheckpoint(
-        monitor="val_acc",
+        monitor=cfg.metric,
         mode="max",
         save_top_k=2,
         filepath=os.path.join(
-            cfg.task_model.name, "{epoch}-{val_loss:.2f}-{val_acc:.3f}"
+            cfg.task_model.name, path_format
         ),
         verbose=True,
     )

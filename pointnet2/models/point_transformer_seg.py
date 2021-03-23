@@ -1,15 +1,18 @@
 import pytorch_lightning as pl
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 from pointnet2_ops.pointnet2_modules import PointnetFPModule, PointnetSAModule
 from torch.utils.data import DataLoader
 
-from pointnet2.data import Indoor3DSemSeg
+from pointnet2.data import Indoor3DSemSeg, PartNormalDataset
 from pointnet2.models.pointnet2_ssg_cls import PointNet2ClassificationSSG
+from pointnet2.utils.timer import Timer
 
 from pointnet2.models.point_transformer_layer import PointTransformerBlock
 from pointnet2.models.transition_down import TransitionDown
 from pointnet2.models.transition_up import TransitionUp
+
 
 class Point_Transformer_SemSeg(PointNet2ClassificationSSG):
     def _build_model(self, dim = [6,32,64,128,256,512], output_dim=13, pos_mlp_hidden=64, attn_mlp_hidden=4, k = 16, sampling_ratio = 0.25):
@@ -39,7 +42,8 @@ class Point_Transformer_SemSeg(PointNet2ClassificationSSG):
         )
 
     def forward(self, pointcloud):
-
+        timer = Timer("forward")
+        timer.tic()
         xyz, features = self._break_up_pc(pointcloud)
         features = features.transpose(1,2).contiguous()
 
@@ -69,10 +73,39 @@ class Point_Transformer_SemSeg(PointNet2ClassificationSSG):
                 l_features[D_n-i] = self.Decoder[2*i+1](l_features[D_n-i], l_xyz[D_n-i])
                 
         del l_features[0], l_features[1:], l_xyz
-
-        return self.fc_layer(l_features[0].transpose(1,2).contiguous())
+        out = self.fc_layer(l_features[0].transpose(1,2).contiguous())
+        timer.toc()
+        return out
 
     def prepare_data(self):
         self.train_dset = Indoor3DSemSeg(self.hparams["num_points"], train=True, download=False)
         self.val_dset = Indoor3DSemSeg(self.hparams["num_points"], train=False, download=False)
+
+
+class Point_Transformer_PartSeg(Point_Transformer_SemSeg):
+    def _build_model(self, dim = [3,32,64,128,256,512], output_dim=50, pos_mlp_hidden=64, attn_mlp_hidden=4, k = 16, sampling_ratio = 0.25):
+      super(Point_Transformer_PartSeg, self)._build_model(dim, output_dim, pos_mlp_hidden, attn_mlp_hidden, k, sampling_ratio)
+
+    def training_step(self, batch, batch_idx):
+      pc, cls, labels = batch
+      logits = self.forward(pc)
+      loss = F.cross_entropy(logits, labels)
+      with torch.no_grad():
+        ious = (torch.argmax(logits, dim=1) == labels).float().mean(1)
+        miou = ious.mean()
+      log = dict(train_loss=loss, train_miou=miou)
+      return dict(loss=loss, log=log, progress_bar=dict(train_miou=miou))
+
+    def validation_step(self, batch, batch_idx):
+      pc, cls, labels = batch
+      logits = self.forward(pc)
+      loss = F.cross_entropy(logits, labels)
+      with torch.no_grad():
+        ious = (torch.argmax(logits, dim=1) == labels).float().mean(1)
+        miou = ious.mean()
+      return dict(val_loss=loss, val_miou=miou)
+
+    def prepare_data(self):
+        self.train_dset = PartNormalDataset(self.hparams["num_points"], 'train')
+        self.val_dset = PartNormalDataset(self.hparams["num_points"], 'val')
 
