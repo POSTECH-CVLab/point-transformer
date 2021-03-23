@@ -1,3 +1,4 @@
 task_model:
     class: pointnet2.models.PointNet2SemSegMSG
     name: sem-msg
+metric: "val_acc"

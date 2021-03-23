@@ -106,9 +106,8 @@ class PartNormalDataset(Dataset):
         point_set = point_set[choice, :]
         seg = seg[choice]
         normal = normal[choice, :]
-
-        pointcloud = np.concatenate([point_set, normal], axis=1)
-        return torch.from_numpy(pointcloud).float(), torch.from_numpy(seg).long()
+        pc = np.concatenate([point_set, normal], axis=1)
+        return torch.from_numpy(pc).float(), torch.from_numpy(cls).long(), torch.from_numpy(seg).long()
 
 
 if __name__ == '__main__':
@@ -116,8 +115,8 @@ if __name__ == '__main__':
   max_label = 0
   print(len(dset))
   for i in range(len(dset)):
-    data, label = dset.__getitem__(i)
-    print(type(data))
-    print(data.shape)
-    print(label.shape)
+    pts, cls, seg = dset.__getitem__(i)
+    print(pts.shape)
+    print(cls.shape)
+    print(seg.shape)
     break

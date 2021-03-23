@@ -1,6 +1,7 @@
 import pytorch_lightning as pl
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 from pointnet2_ops.pointnet2_modules import PointnetFPModule, PointnetSAModule
 from torch.utils.data import DataLoader
 
@@ -84,6 +85,25 @@ class Point_Transformer_SemSeg(PointNet2ClassificationSSG):
 class Point_Transformer_PartSeg(Point_Transformer_SemSeg):
     def _build_model(self, dim = [3,32,64,128,256,512], output_dim=50, pos_mlp_hidden=64, attn_mlp_hidden=4, k = 16, sampling_ratio = 0.25):
       super(Point_Transformer_PartSeg, self)._build_model(dim, output_dim, pos_mlp_hidden, attn_mlp_hidden, k, sampling_ratio)
+
+    def training_step(self, batch, batch_idx):
+      pc, cls, labels = batch
+      logits = self.forward(pc)
+      loss = F.cross_entropy(logits, labels)
+      with torch.no_grad():
+        ious = (torch.argmax(logits, dim=1) == labels).float().mean(1)
+        miou = ious.mean()
+      log = dict(train_loss=loss, train_miou=miou)
+      return dict(loss=loss, log=log, progress_bar=dict(train_miou=miou))
+
+    def validation_step(self, batch, batch_idx):
+      pc, cls, labels = batch
+      logits = self.forward(pc)
+      loss = F.cross_entropy(logits, labels)
+      with torch.no_grad():
+        ious = (torch.argmax(logits, dim=1) == labels).float().mean(1)
+        miou = ious.mean()
+      return dict(val_loss=loss, val_miou=miou)
 
     def prepare_data(self):
         self.train_dset = PartNormalDataset(self.hparams["num_points"], 'train')

@@ -8,3 +8,4 @@ optimizer:
     milestones: "120.160"
     gamma: 0.1
 batch_size: 16
+metric: "val_miou"
