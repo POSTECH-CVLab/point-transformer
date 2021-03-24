@@ -114,7 +114,7 @@ class TransitionDown(nn.Module):
         )  # mlp_x: (B, N, out_channels)
 
         # 2-2: Extract features based on neighbors
-        features = index_points(mlp_x, neighbors)  # features: (B, M, k, out_channels)
+        features = pt_utils.index_points(mlp_x, neighbors)  # features: (B, M, k, out_channels)
 
         # 3: Local Max Pooling
         y = torch.max(features, dim=2)[0]  # y: (B, M, out_channels)

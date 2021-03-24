@@ -103,6 +103,6 @@ class PointTransformerPartSegmentation(PointTransformerSemSegmentation):
       return dict(val_loss=loss, val_miou=miou)
 
     def prepare_data(self):
-        self.train_dset = PartNormalDataset(self.hparams["num_points"], 'train')
-        self.val_dset = PartNormalDataset(self.hparams["num_points"], 'val')
+        self.train_dset = PartNormalDataset(self.hparams["num_points"], 'trainval')
+        self.val_dset = PartNormalDataset(self.hparams["num_points"], 'test')
 
