@@ -36,30 +36,20 @@ There example training script can be found in ``pointnet2/train.py``.  The train
 using `PyTorch Lightning <https://github.com/williamFalcon/pytorch-lightning>`_ and `Hydra <https://hydra.cc/>`_.
 
 
-A classifion pointnet can be trained as
+A classifion Point Transformer can be trained as
 
 ::
 
-  python pointnet2/train.py task=cls
+  python -m pointnet2.train task=cls model=point_transformer 
+  
+It will load the config files, task/cls.yaml, model/point_transformer.yaml, and task_model/cls-point_transformer.yaml.
+If you want to override the default config, you can pass the command line arguments, 
 
-  # Or with model=msg for multi-scale grouping
+:: 
 
-  python pointnet2/train.py task=cls model=msg
+  # Change the batch size to 32
+  python -m pointnet2.train task=cls model=point_transformer batch_size=32
 
-
-Similarly, semantic segmentation can be trained by changing the task to ``semseg``
-
-::
-
-  python pointnet2/train.py task=semseg
-
-
-
-Multi-GPU training can be enabled by passing a list of GPU ids to use, for instance
-
-::
-
-  python pointnet2/train.py task=cls gpus=[0,1,2,3]
 
 
 Building only the CUDA kernels
@@ -76,7 +66,17 @@ Building only the CUDA kernels
 
 
 
+Experiment Results
+----------------------------------
 
+- Classification on ModelNet40
+
+========  ========  ======
+Model     mAcc      OA
+========  ========  ======
+Paper     90.6      93.7
+Ours                87.2
+========  ========  ======
 
 
 Contributing
