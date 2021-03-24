@@ -3,7 +3,7 @@ Point-Transformer PyTorch
 
 * Implemention of `Point Transformer <https://arxiv.org/abs/2012.09164>`_.
 
-* Code based on PointNet2 Pytorch repository `https://github.com/erikwijmans/Pointnet2_PyTorch`_.
+* Code based on `PointNet2 Pytorch repository <https://github.com/erikwijmans/Pointnet2_PyTorch>`_.
 
 
 Setup
@@ -22,27 +22,28 @@ Setup
     pip install -r requirements.txt
 
 
-
-
-
-
-
-Example training
+Training
 ----------------
 
 Install with: ``pip install -e .``
 
-There example training script can be found in ``pointnet2/train.py``.  The training examples are built
+The example training script can be found in ``pointnet2/train.py``.  The training examples are built
 using `PyTorch Lightning <https://github.com/williamFalcon/pytorch-lightning>`_ and `Hydra <https://hydra.cc/>`_.
 
 
-A classification Point Transformer can be trained as
+You can train a Point Transformer model on various tasks as,
 
 ::
 
+  # train Point Transformer for classification task on ModelNet40
   python -m pointnet2.train task=cls model=point_transformer 
   
-It will load the config files, task/cls.yaml, model/point_transformer.yaml, and task_model/cls-point_transformer.yaml.
+  # train Point Transformer for part segmentation task on ShapeNet
+  python -m pointnet2.train task=partseg model=point_transformer
+  
+  # train Point Transformer for semantic segmentation task on S3DIS
+  python -m pointnet2.train task=semseg model=point_transformer
+
 If you want to override the default config, you can pass the command line arguments, 
 
 :: 
@@ -77,6 +78,12 @@ Model     mAcc      OA
 Paper     90.6      93.7
 Ours                87.2
 ========  ========  ======
+
+- Part Segmentation on ShapeNet
+
+
+- Semantic Segmentation on S3DIS
+
 
 
 Contributing
