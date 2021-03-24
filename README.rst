@@ -11,8 +11,8 @@ Setup
 
 * Install ``python`` -- This repo is tested with ``{3.6, 3.7}``
 
-* Install ``pytorch`` with CUDA -- This repo is tested with ``{1.4, 1.5}``.
-  It may work with versions newer than ``1.5``, but this is not guaranteed.
+* Install ``pytorch`` with CUDA -- This repo is tested with ``{1.4, 1.5, 1.7.1}``.
+  It may work with versions newer than ``1.7.1``, but this is not guaranteed.
 
 
 * Install dependencies
