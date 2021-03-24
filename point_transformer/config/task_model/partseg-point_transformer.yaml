@@ -1,5 +1,5 @@
 task_model:
-    class: pointnet2.models.PointTransformerPartSegmentation
+    class: point_transformer.models.PointTransformerPartSegmentation
     name: partseg-point_transformer
 optimizer:
     lr: 0.05

@@ -1,5 +1,5 @@
 task_model:
-    class: pointnet2.models.PointTransformerClassification
+    class: point_transformer.models.PointTransformerClassification
     name: cls-point_transformer
 optimizer:
     lr: 0.001 
