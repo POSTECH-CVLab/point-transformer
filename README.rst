@@ -36,7 +36,7 @@ There example training script can be found in ``pointnet2/train.py``.  The train
 using `PyTorch Lightning <https://github.com/williamFalcon/pytorch-lightning>`_ and `Hydra <https://hydra.cc/>`_.
 
 
-A classifion Point Transformer can be trained as
+A classification Point Transformer can be trained as
 
 ::
 
