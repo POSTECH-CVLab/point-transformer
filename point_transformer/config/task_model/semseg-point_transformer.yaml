@@ -1,0 +1,4 @@
+task_model:
+    class: pointnet2.models.PointTransformerSemSegmentation
+    name: semseg-point_transformer
+metric: "val_acc"
