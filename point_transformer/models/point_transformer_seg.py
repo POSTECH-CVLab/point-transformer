@@ -106,3 +106,12 @@ class PointTransformerPartSegmentation(PointTransformerSemSegmentation):
         self.train_dset = PartNormalDataset(self.hparams["num_points"], 'trainval')
         self.val_dset = PartNormalDataset(self.hparams["num_points"], 'test')
 
+    def _build_dataloader(self, dset, mode):
+        return DataLoader(
+            dset,
+            batch_size=self.hparams["batch_size"] if mode == 'train' else 1,
+            shuffle=mode == "train",
+            num_workers=4,
+            pin_memory=True,
+            drop_last=mode == "train",
+        )
