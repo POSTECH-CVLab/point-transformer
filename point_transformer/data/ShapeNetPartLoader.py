@@ -22,6 +22,7 @@ def pc_normalize(pc):
 class PartNormalDataset(Dataset):
     def __init__(self, npoints=2500, split='train', normalize=False):
         self.npoints = npoints
+        self.split = split
         self.root = os.path.join(DATA_DIR, 'shapenetcore_partanno_segmentation_benchmark_v0_normal')
         self.catfile = os.path.join(self.root, 'synsetoffset2category.txt')
         self.cat = {}
@@ -98,14 +99,14 @@ class PartNormalDataset(Dataset):
         if self.normalize:
             point_set = pc_normalize(point_set)
 
-        choice = np.random.choice(len(seg), self.npoints, replace=True)
-
-        # resample
-        # note that the number of points in some points clouds is less than 2048, thus use random.choice
-        # remember to use the same seed during train and test for a getting stable result
-        point_set = point_set[choice, :]
-        seg = seg[choice]
-        normal = normal[choice, :]
+        if self.split == 'train' or self.split == 'trainval':
+            choice = np.random.choice(len(seg), self.npoints, replace=True)
+            # resample
+            # note that the number of points in some points clouds is less than 2048, thus use random.choice
+            # remember to use the same seed during train and test for a getting stable result
+            point_set = point_set[choice, :]
+            seg = seg[choice]
+            normal = normal[choice, :]
         pc = np.concatenate([point_set, normal], axis=1)
         return torch.from_numpy(pc).float(), torch.from_numpy(cls).long(), torch.from_numpy(seg).long()
 
