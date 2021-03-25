@@ -68,18 +68,30 @@ Experiment Results
 
 - Classification on ModelNet40
 
-========  ========  ======
-Model     mAcc      OA
-========  ========  ======
-Paper     90.6      93.7
-Ours                87.2
-========  ========  ======
+    ===================  ========  ======
+    Model                mAcc      OA
+    ===================  ========  ======
+    Paper                90.6      93.7
+    Our Implemention               87.2
+    ===================  ========  ======
 
 - Part Segmentation on ShapeNet
 
+    ===================  =========  =========
+    Model                cat. mIoU  ins. mIoU
+    ===================  =========  =========
+    Paper                83.7       86.6
+    Our Implemention               
+    ===================  =========  =========
 
-- Semantic Segmentation on S3DIS
+- Semantic Segmentation on S3DIS Area5
 
+    ===================  ========  ======  ======
+    Model                mAcc      OA      mIoU
+    ===================  ========  ======  ======
+    Paper                76.5      90.8    70.4
+    Our Implemention               
+    ===================  ========  ======  ======
 
 
 Contributing
