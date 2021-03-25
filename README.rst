@@ -11,8 +11,8 @@ Setup
 
 * Install ``python`` -- This repo is tested with ``{3.6, 3.7}``
 
-* Install ``pytorch`` with CUDA -- This repo is tested with ``{1.4, 1.5}``.
-  It may work with versions newer than ``1.5``, but this is not guaranteed.
+* Install ``pytorch`` with CUDA -- This repo is tested with ``{1.4, 1.5, 1.7.1}``.
+  It may work with versions newer than ``1.7.1``, but this is not guaranteed.
 
 
 * Install dependencies
@@ -27,7 +27,7 @@ Training
 
 Install with: ``pip install -e .``
 
-The example training script can be found in ``pointnet2/train.py``.  The training examples are built
+The example training script can be found in ``point_transformer/train.py``.  The training examples are built
 using `PyTorch Lightning <https://github.com/williamFalcon/pytorch-lightning>`_ and `Hydra <https://hydra.cc/>`_.
 
 
@@ -36,20 +36,20 @@ You can train a Point Transformer model on various tasks as,
 ::
 
   # train Point Transformer for classification task on ModelNet40
-  python -m pointnet2.train task=cls model=point_transformer 
+  python -m point_transformer.train task=cls
   
   # train Point Transformer for part segmentation task on ShapeNet
-  python -m pointnet2.train task=partseg model=point_transformer
+  python -m point_transformer.train task=partseg
   
   # train Point Transformer for semantic segmentation task on S3DIS
-  python -m pointnet2.train task=semseg model=point_transformer
+  python -m point_transformer.train task=semseg
 
 If you want to override the default config, you can pass the command line arguments, 
 
 :: 
 
   # Change the batch size to 32
-  python -m pointnet2.train task=cls model=point_transformer batch_size=32
+  python -m point_transformer.train task=cls batch_size=32
 
 
 
@@ -59,11 +59,7 @@ Building only the CUDA kernels
 
 ::
 
-  pip install pointnet2_ops_lib/.
-
-  # Or if you would like to install them directly (this can also be used in a requirements.txt)
-
-  pip install "git+git://github.com/erikwijmans/Pointnet2_PyTorch.git#egg=pointnet2_ops&subdirectory=pointnet2_ops_lib"
+  pip install point_transformer_lib/.
 
 
 

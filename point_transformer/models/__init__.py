@@ -1,0 +1,2 @@
+from point_transformer.models.point_transformer_seg import PointTransformerSemSegmentation, PointTransformerPartSegmentation
+from point_transformer.models.point_transformer_cls import PointTransformerClassification

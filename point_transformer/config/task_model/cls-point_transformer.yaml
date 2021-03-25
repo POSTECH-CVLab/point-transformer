@@ -1,0 +1,11 @@
+task_model:
+    class: point_transformer.models.PointTransformerClassification
+    name: cls-point_transformer
+optimizer:
+    lr: 0.001 
+    momentum: 0.9
+    weight_decay: 0.0001
+    milestones: "120.160"
+    gamma: 0.1
+batch_size: 16
+metric: "val_acc"

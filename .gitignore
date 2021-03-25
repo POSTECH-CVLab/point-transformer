@@ -10,17 +10,17 @@ checkpoints
 .ccls
 .ccls-cache/
 dist/
-pointnet2.egg-info/
+point_transformer.egg-info/
 *.zip
 *.so
 .tox/
 .mypy_cache
 **/*.pyc
-pointnet2/data/modelnet40_normal_resampled/
-pointnet2/data/modelnet40_normal_resampled_cache/
-pointnet2/data/modelnet40_ply_hdf5_2048/
+point_transformer/data/modelnet40_normal_resampled/
+point_transformer/data/modelnet40_normal_resampled_cache/
+point_transformer/data/modelnet40_ply_hdf5_2048/
 
 .ipynb_checkpoints/
-pointnet2/models/test.py
+point_transformer/models/test.py
 outputs/
 .vscode
