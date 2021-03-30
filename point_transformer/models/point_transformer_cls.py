@@ -25,7 +25,7 @@ class PointTransformerClassification(BaseClassification):
             nn.ReLU(True),
             nn.Linear(channels[0], channels[0]),
         )
-        self.prev_transformer = PointTransformerBlock(channels[0], k)
+        self.prev_transformer = PointTransformerBlock(channels[0], k, self.hparams["model.nn_in_feat"])
 
         self.trans_downs = nn.ModuleList()
         self.transformers = nn.ModuleList()
@@ -39,7 +39,7 @@ class PointTransformerClassification(BaseClassification):
                     sampling_ratio=sampling_ratio,
                 )
             )
-            self.transformers.append(PointTransformerBlock(channels[i], k))
+            self.transformers.append(PointTransformerBlock(channels[i], k, self.hparams["model.nn_in_feat"]))
 
         self.final_block = nn.Sequential(
             nn.Linear(channels[-3], channels[-2]),

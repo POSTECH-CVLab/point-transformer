@@ -9,11 +9,11 @@ import point_transformer_ops.point_transformer_utils as pt_utils
 
 
 class PointTransformerBlock(nn.Module):
-    def __init__(self, dim, k, in_feat=False):
+    def __init__(self, dim, k, nn_in_feat=False):
         super().__init__()
         
         self.k = k
-        self.in_feat = in_feat
+        self.nn_in_feat = nn_in_feat
         self.prev_linear = nn.Linear(dim, dim)
         self.to_q = nn.Linear(dim, dim, bias=False)
         self.to_k = nn.Linear(dim, dim, bias=False)
@@ -35,7 +35,7 @@ class PointTransformerBlock(nn.Module):
     def forward(self, x, pos):
         # queries, keys, values
         x_pre = x
-        if self.in_feat:
+        if self.nn_in_feat:
             knn_idx = pt_utils.kNN_torch(x_pre, x_pre, self.k)
         else:
             knn_idx = pt_utils.kNN_torch(pos, pos, self.k)
