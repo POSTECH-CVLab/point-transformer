@@ -81,7 +81,7 @@ Our Implemention            87.2
 Model             cat. mIoU  ins. mIoU
 ================  =========  =========
 Paper             83.7       86.6
-Our Implemention             
+Our Implemention             83.2
 ================  =========  =========
 
 - Semantic Segmentation on S3DIS Area5
