@@ -8,21 +8,13 @@ import numpy as np
 import point_transformer_ops.point_transformer_utils as pt_utils
 
 
-def idx_pt(pts, idx):
-    raw_size  = idx.size()
-    idx = idx.reshape(raw_size[0], -1)
-    res = torch.gather(pts, 1, idx[..., None].expand(-1, -1, pts.size(-1)))
-    return res.reshape(*raw_size,-1)
-
-
 class PointTransformerBlock(nn.Module):
-    def __init__(self, dim, k):
+    def __init__(self, dim, k, in_feat=False):
         super().__init__()
         
-        self.prev_linear = nn.Linear(dim, dim)
-
         self.k = k
-
+        self.in_feat = in_feat
+        self.prev_linear = nn.Linear(dim, dim)
         self.to_q = nn.Linear(dim, dim, bias=False)
         self.to_k = nn.Linear(dim, dim, bias=False)
         self.to_v = nn.Linear(dim, dim, bias=False)
@@ -33,26 +25,25 @@ class PointTransformerBlock(nn.Module):
             nn.ReLU(True),
             nn.Linear(dim, dim)
         )
-
         self.attn_mlp = nn.Sequential(
             nn.Linear(dim, dim),
             nn.ReLU(True),
             nn.Linear(dim, dim)
         )
-
         self.final_linear = nn.Linear(dim, dim)
 
     def forward(self, x, pos):
         # queries, keys, values
-
         x_pre = x
-        
-        knn_idx = pt_utils.kNN_torch(pos, pos, self.k)
+        if self.in_feat:
+            knn_idx = pt_utils.kNN_torch(x_pre, x_pre, self.k)
+        else:
+            knn_idx = pt_utils.kNN_torch(pos, pos, self.k)
         knn_xyz = pt_utils.index_points(pos, knn_idx)
 
         q = self.to_q(x)
-        k = idx_pt(self.to_k(x), knn_idx)
-        v = idx_pt(self.to_v(x), knn_idx)
+        k = pt_utils.index_points(self.to_k(x), knn_idx)
+        v = pt_utils.index_points(self.to_v(x), knn_idx)
         
         pos_enc = self.pos_mlp(pos[:,:,None]-knn_xyz)
 
