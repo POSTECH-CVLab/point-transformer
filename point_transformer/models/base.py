@@ -166,7 +166,7 @@ class BaseClassification(pl.LightningModule):
             dset,
             batch_size=self.hparams["batch_size"],
             shuffle=mode == "train",
-            num_workers=4,
+            num_workers=2,
             pin_memory=True,
             drop_last=mode == "train",
         )

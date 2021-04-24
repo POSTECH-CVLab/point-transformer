@@ -111,7 +111,7 @@ class PointTransformerPartSegmentation(PointTransformerSemSegmentation):
             dset,
             batch_size=self.hparams["batch_size"] if mode == 'train' else 1,
             shuffle=mode == "train",
-            num_workers=4,
+            num_workers=2,
             pin_memory=True,
             drop_last=mode == "train",
         )
