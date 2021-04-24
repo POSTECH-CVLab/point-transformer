@@ -23,20 +23,20 @@ def pc_normalize(pc):
     return pc
 
 
-class ModelNet40Cls(data.Dataset):
+class ModelNet10Cls(data.Dataset):
     def __init__(self, num_points, transforms=None, train=True, download=True):
         super().__init__()
 
         self.transforms = transforms
 
         self.set_num_points(num_points)
-        self._cache = os.path.join(DATA_DIR, "modelnet40_normal_resampled_cache")
+        self._cache = os.path.join(DATA_DIR, "modelnet10_normal_resampled_cache")
 
         if not osp.exists(self._cache):
-            self.folder = "modelnet40_normal_resampled"
+            self.folder = "modelnet10_normal_resampled"
             self.data_dir = os.path.join(DATA_DIR, self.folder)
             self.url = (
-                "https://shapenet.cs.stanford.edu/media/modelnet40_normal_resampled.zip"
+                "https://shapenet.cs.stanford.edu/media/modelnet10_normal_resampled.zip"
             )
 
             if download and not os.path.exists(self.data_dir):
@@ -54,7 +54,7 @@ class ModelNet40Cls(data.Dataset):
             self.train = train
             self.set_num_points(num_points)
 
-            self.catfile = os.path.join(self.data_dir, "modelnet40_shape_names.txt")
+            self.catfile = os.path.join(self.data_dir, "modelnet10_shape_names.txt")
             self.cat = [line.rstrip() for line in open(self.catfile)]
             self.classes = dict(zip(self.cat, range(len(self.cat))))
 
@@ -66,14 +66,14 @@ class ModelNet40Cls(data.Dataset):
                     shape_ids = [
                         line.rstrip()
                         for line in open(
-                            os.path.join(self.data_dir, "modelnet40_train.txt")
+                            os.path.join(self.data_dir, "modelnet10_train.txt")
                         )
                     ]
                 else:
                     shape_ids = [
                         line.rstrip()
                         for line in open(
-                            os.path.join(self.data_dir, "modelnet40_test.txt")
+                            os.path.join(self.data_dir, "modelnet10_test.txt")
                         )
                     ]
 
@@ -154,7 +154,7 @@ if __name__ == "__main__":
             d_utils.PointcloudJitter(),
         ]
     )
-    dset = ModelNet40Cls(16, train=True, transforms=transforms)
+    dset = ModelNet10Cls(16, train=True, transforms=transforms)
     print(dset[0][0])
     print(dset[0][1])
     print(len(dset))

@@ -35,7 +35,7 @@ You can train a Point Transformer model on various tasks as,
 
 ::
 
-  # train Point Transformer for classification task on ModelNet40
+  # train Point Transformer for classification task on ModelNet10
   python -m point_transformer.train task=cls
   
   # train Point Transformer for part segmentation task on ShapeNet

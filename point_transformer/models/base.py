@@ -8,7 +8,7 @@ from torch.utils.data import DataLoader, DistributedSampler
 from torchvision import transforms
 
 import point_transformer.data.data_utils as d_utils
-from point_transformer.data.ModelNet40Loader import ModelNet40Cls
+from point_transformer.data.ModelNet10Loader import ModelNet10Cls
 
 
 def set_bn_momentum_default(bn_momentum):
@@ -154,10 +154,10 @@ class BaseClassification(pl.LightningModule):
             ]
         )
 
-        self.train_dset = ModelNet40Cls(
+        self.train_dset = ModelNet10Cls(
             self.hparams["num_points"], transforms=train_transforms, train=True
         )
-        self.val_dset = ModelNet40Cls(
+        self.val_dset = ModelNet10Cls(
             self.hparams["num_points"], transforms=None, train=False
         )
 
