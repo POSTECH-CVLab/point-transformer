@@ -13,7 +13,7 @@ DATA:
   num_point: 4096  # point number [default: 4096]
 
 TRAIN:
-  arch: pointnet2_paconv_seg
+  arch: point_transformer_seg
   use_xyz: True
   sync_bn: True  # adopt sync_bn or not
   ignore_label: 255
@@ -26,25 +26,26 @@ TRAIN:
   start_epoch: 0
   step_epoch: 30
   multiplier: 0.1
+  lr_multidecay: True
   momentum: 0.9
   weight_decay: 0.0001
   manual_seed:
   print_freq: 100
   save_freq: 1
-  save_path: exp/s3dis/pointnet2_paconv/model
+  save_path: exp/s3dis/point_transformer/model
   weight:  # path to initial weight (default: none)
   resume:
   evaluate: True  # evaluate on validation set, extra gpu memory needed and small batch_size_val is recommend
   m: 16
-  paconv: [True, True, True, True, False, False, False, False]
   score_input: ed7
   kernel_input: neighbor
-  hidden: [16, 16, 16]
+  hidden: [8, 16, 16]
   no_transformation: False
   color_augment: 0.0
   norm_no_trans: True
   correlation_loss: True
   correlation_loss_scale: 10.0
+  cuda: True
 
 TEST:
   test_list: dataset/s3dis/list/val5.txt
@@ -53,6 +54,6 @@ TEST:
   test_gpu: [0]
   test_workers: 4
   test_batch_size: 8
-  model_path: exp/s3dis/pointnet2_paconv/model/best_train.pth
-  save_folder: exp/s3dis/pointnet2_paconv/result/best_epoch/val5_0.5  # results save folder
+  model_path: exp/s3dis/point_transformer/model/best_train.pth
+  save_folder: exp/s3dis/point_transformer/result/best_epoch/val5_0.5  # results save folder
   names_path: data/s3dis/s3dis_names.txt
