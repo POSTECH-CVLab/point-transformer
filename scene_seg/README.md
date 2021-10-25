@@ -53,9 +53,15 @@
 
 ## Citation
 
-If you use this code, please consider citing PAConv:
-
+If you use this code, please consider citing Point Transformer and PAConv:
 ```
+@inproceedings{zhao2021point,
+  title={Point transformer},
+  author={Zhao, Hengshuang and Jiang, Li and Jia, Jiaya and Torr, Philip HS and Koltun, Vladlen},
+  booktitle={Proceedings of the IEEE/CVF International Conference on Computer Vision},
+  pages={16259--16268},
+  year={2021}
+}
 @inproceedings{xu2021paconv,
   title={PAConv: Position Adaptive Convolution with Dynamic Kernel Assembling on Point Clouds},
   author={Xu, Mutian and Ding, Runyu and Zhao, Hengshuang and Qi, Xiaojuan},
