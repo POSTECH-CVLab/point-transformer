@@ -14,11 +14,11 @@ DATA:
 
 TRAIN:
   arch: point_transformer_seg
-  sync_bn: False  # adopt sync_bn or not
+  sync_bn: True  # adopt sync_bn or not
   ignore_label: 255
-  train_gpu: [3]
+  train_gpu: [0, 1]
   train_workers: 8  # data loader workers
-  train_batch_size: 16  # batch size for training
+  train_batch_size: 32  # batch size for training
   train_batch_size_val: 8 # batch size for validation during training, memory and speed tradeoff
   base_lr: 0.05
   epochs: 100
