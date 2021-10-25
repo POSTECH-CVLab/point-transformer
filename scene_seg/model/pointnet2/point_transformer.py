@@ -1,7 +1,6 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from einops import rearrange
 
 from lib.pointops.functions import pointops
 
@@ -56,7 +55,7 @@ class PointTransformerLayer(nn.Module):
         # self-attention
         a = self.to_attn(q.unsqueeze(-1) - n_k[:, 3:, :, :] + n_r) # (B, C_out, N, K)
         a = self.softmax(a)
-        y = torch.einsum('b c n k, b c n k -> b c n', n_v, a)
+        y = torch.sum(n_v * a, dim=-1, keepdim=False)
         return y
     
     
