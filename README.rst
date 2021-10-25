@@ -6,6 +6,11 @@ Point-Transformer PyTorch
 * For k-nearest neighbor search with heap sort, please refer `PAConv Pytorch repository <https://github.com/CVMI-Lab/PAConv>`_.
 
 
+Updates
+-----
+* [2021.10.26] Add semantic segmentation on S3DIS Area 5 with the new codebas, `PAConv Pytorch repository <https://github.com/CVMI-Lab/PAConv>`_.
+
+
 Setup
 -----
 * The code is tested on Ubuntu 20.04 and CUDA 11.1.
@@ -19,7 +24,7 @@ Setup
 Training & Evaluation
 ----------------
 
-Check out sub-directories for classification, part segmentation, and scene segmentation.
+Please check directories for classification, part segmentation, and scene segmentation.
 
 
 Experiment Results
