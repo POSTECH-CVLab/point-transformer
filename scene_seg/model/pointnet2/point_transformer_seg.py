@@ -5,7 +5,6 @@ import torch.nn as nn
 import torch.nn.functional as F
 import copy
 
-from util.paconv_util import weight_init, assign_score, get_ed, assign_kernel_withoutk
 from lib.paconv_lib.functional import assign_score_withk as assign_score_cuda
 
 
