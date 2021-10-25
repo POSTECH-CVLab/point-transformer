@@ -1,13 +1,6 @@
 # 3D Semantic Segmentation
 
-## Installation
-
-### Requirements
-   - Hardware: 1 GPU
-   - Software: 
-      PyTorch>=1.5.0, Python>=3, CUDA>=10.2, tensorboardX, tqdm, h5py, pyYaml
-
-### Dataset
+## Dataset
 - Download S3DIS [dataset](https://drive.google.com/drive/folders/12wLblskNVBUeryt1xaJTQlIoJac2WehV) and symlink the paths to them as follows (you can alternatively modify the relevant paths specified in folder `config`):
     ```
      mkdir -p dataset
@@ -16,13 +9,7 @@
 
 ## Usage
 
-1. Requirement:
-
-   - Hardware: 2 GPUs to hold 10000MB
-   - Software: 
-      PyTorch>=1.5.0, Python3.7, CUDA>=10.2, tensorboardX, tqdm, h5py, pyYaml
-
-2. Train:
+1. Train:
 
    - Specify the gpu used in config and then do training:
 
@@ -30,7 +17,7 @@
      sh tool/train.sh s3dis point_transformer
      ```
 
-3. Test:
+2. Test:
 
    - For full testing (get listed performance):
 
