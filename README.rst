@@ -53,7 +53,7 @@ Our Implemention
 ================  ========  ======  ======
 
 
-Acknowledments
+Acknowledment
 -----
 
 Our code is heavily based on `PAConv Pytorch repository <https://github.com/CVMI-Lab/PAConv>`_.

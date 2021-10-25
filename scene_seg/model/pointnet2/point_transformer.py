@@ -72,12 +72,12 @@ if __name__ == "__main__":
     torch.cuda.manual_seed_all(1)
     assert torch.cuda.is_available()
     
-    B, C, N = 2, 16, 9
+    B, C, N, K = 2, 16, 9, 3
     
     p = torch.randn(B, N, 3).cuda()
     x = torch.randn(B, C, N).cuda()
 
-    layer = PointTransformerLayer(C).cuda()
+    layer = PointTransformerLayer(C, num_neighbors=K).cuda()
     s = time()
     y = layer(p, x)
     d = time() - s
