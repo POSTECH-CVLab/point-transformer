@@ -14,9 +14,9 @@ DATA:
 
 TRAIN:
   arch: point_transformer_seg
-  sync_bn: True  # adopt sync_bn or not
+  sync_bn: False  # adopt sync_bn or not
   ignore_label: 255
-  train_gpu: 
+  train_gpu: [3]
   train_workers: 8  # data loader workers
   train_batch_size: 16  # batch size for training
   train_batch_size_val: 8 # batch size for validation during training, memory and speed tradeoff
@@ -33,17 +33,11 @@ TRAIN:
   save_freq: 1
   save_path: exp/s3dis/point_transformer/model
   weight:  # path to initial weight (default: none)
-  resume:
+  resume: False
   evaluate: True  # evaluate on validation set, extra gpu memory needed and small batch_size_val is recommend
-  m: 16
-  score_input: ed7
-  kernel_input: neighbor
-  hidden: [8, 16, 16]
   no_transformation: False
   color_augment: 0.0
   norm_no_trans: True
-  correlation_loss: True
-  correlation_loss_scale: 10.0
   cuda: True
 
 TEST:

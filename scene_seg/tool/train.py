@@ -16,7 +16,6 @@ from tensorboardX import SummaryWriter
 from util import dataset, transform
 from util.s3dis import S3DIS
 from util.util import AverageMeter, intersectionAndUnionGPU, get_logger, get_parser
-from model.pointnet2.paconv import PAConv
 
 
 def worker_init_fn(worker_id):
@@ -53,15 +52,11 @@ def get_git_commit_id():
 
 def main():
     init()
-    if args.arch == 'pointnet_seg':
-        from model.pointnet.pointnet import PointNetSeg as Model
-    elif args.arch == 'pointnet2_seg':
-        from model.pointnet2.pointnet2_seg import PointNet2SSGSeg as Model
-    elif args.arch == 'pointnet2_paconv_seg':
-        from model.pointnet2.pointnet2_paconv_seg import PointNet2SSGSeg as Model
+    if args.arch == 'point_transformer_seg':
+        from model.point_transformer.point_transformer_seg import PointTransformerSeg as Model
     else:
         raise Exception('architecture not supported yet'.format(args.arch))
-    model = Model(c=args.fea_dim, k=args.classes, use_xyz=args.use_xyz, args=args)
+    model = Model(c=args.fea_dim, k=args.classes, args=args)
 
     best_mIoU = 0.0
 
@@ -177,8 +172,6 @@ def train(train_loader, model, criterion, optimizer, epoch, correlation_loss):
     batch_time = AverageMeter()
     data_time = AverageMeter()
     loss_meter = AverageMeter()
-    main_loss_meter = AverageMeter()
-    corr_loss_meter = AverageMeter()
     intersection_meter = AverageMeter()
     union_meter = AverageMeter()
     target_meter = AverageMeter()
@@ -193,20 +186,7 @@ def train(train_loader, model, criterion, optimizer, epoch, correlation_loss):
         output = model(input)
         if target.shape[-1] == 1:
             target = target[:, 0]  # for cls
-        main_loss = criterion(output, target)
-
-        corr_loss = 0.0
-        corr_loss_scale = args.get('correlation_loss_scale', 10.0)
-        if correlation_loss:
-            for m in model.module.SA_modules.named_modules():
-                if isinstance(m[-1], PAConv):
-                    kernel_matrice, output_dim, m_dim = m[-1].weightbank, m[-1].output_dim, m[-1].m
-                    new_kernel_matrice = kernel_matrice.view(-1, m_dim, output_dim).permute(1, 0, 2).reshape(m_dim, -1)
-                    cost_matrice = torch.matmul(new_kernel_matrice, new_kernel_matrice.T) / torch.matmul(
-                        torch.sqrt(torch.sum(new_kernel_matrice ** 2, dim=-1, keepdim=True)),
-                        torch.sqrt(torch.sum(new_kernel_matrice.T ** 2, dim=0, keepdim=True)))
-                    corr_loss += torch.sum(torch.triu(cost_matrice, diagonal=1) ** 2)
-        loss = main_loss + corr_loss_scale * corr_loss
+        loss = criterion(output, target)
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
@@ -218,8 +198,6 @@ def train(train_loader, model, criterion, optimizer, epoch, correlation_loss):
 
         accuracy = sum(intersection_meter.val) / (sum(target_meter.val) + 1e-10)
         loss_meter.update(loss.item(), input.size(0))
-        main_loss_meter.update(main_loss.item(), input.size(0))
-        corr_loss_meter.update(corr_loss.item() * corr_loss_scale if correlation_loss else corr_loss, input.size(0))
         batch_time.update(time.time() - end)
         end = time.time()
 
@@ -237,14 +215,10 @@ def train(train_loader, model, criterion, optimizer, epoch, correlation_loss):
                         'Batch {batch_time.val:.3f} ({batch_time.avg:.3f}) '
                         'Remain {remain_time} '
                         'Loss {loss_meter.val:.4f} '
-                        'Main Loss {main_loss_meter.val:.4f} '
-                        'Corr Loss {corr_loss_meter.val:.4f} '
                         'Accuracy {accuracy:.4f}.'.format(epoch+1, args.epochs, i + 1, len(train_loader),
                                                           batch_time=batch_time, data_time=data_time,
                                                           remain_time=remain_time,
                                                           loss_meter=loss_meter,
-                                                          main_loss_meter=main_loss_meter,
-                                                          corr_loss_meter=corr_loss_meter,
                                                           accuracy=accuracy))
 
         writer.add_scalar('loss_train_batch', loss_meter.val, current_iter)

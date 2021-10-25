@@ -1,6 +1,5 @@
-from collections import namedtuple
+from copy import deepcopy
 
-import torch
 import torch.nn as nn
 
 from model.point_transformer.point_transformer_modules import (
@@ -12,7 +11,7 @@ from model.point_transformer.point_transformer_modules import (
 
 class PointTransformerSeg(nn.Module):
     
-    def __init__(self, c=3, k=13, args=None):
+    def __init__(self, c=6, k=16, args=None):
         super(PointTransformerSeg, self).__init__()
         
         self.nsamples = args.get('nsamples', [8, 16, 16, 16, 16])
@@ -72,7 +71,7 @@ class PointTransformerSeg(nn.Module):
     
     def _break_up_pc(self, pc):
         xyz = pc[..., 0:3].contiguous()
-        features = (pc[..., 3:].transpose(1, 2).contiguous() if pc.size(-1) > 3 else None)
+        features = pc[..., 3:].transpose(1, 2).contiguous() if pc.size(-1) > 3 else deepcopy(xyz)
         return xyz, features
     
     def forward(self, pc):
@@ -94,7 +93,7 @@ class PointTransformerSeg(nn.Module):
         y = self.dec_mlp(x5)
         p5y = self.dec_layer5([p5, y])
         p4y = self.up5to4(p5y, p4x4)
-        p4y = self.dec_layer1(p4y)
+        p4y = self.dec_layer4(p4y)
         p3y = self.up4to3(p4y, p3x3)
         p3y = self.dec_layer3(p3y)
         p2y = self.up3to2(p3y, p2x2)
@@ -103,19 +102,3 @@ class PointTransformerSeg(nn.Module):
         p1, y = self.dec_layer1(p1y)
         y = self.out_mlp(y)
         return y
-
-
-def model_fn_decorator(criterion):
-    ModelReturn = namedtuple("ModelReturn", ['preds', 'loss', 'acc'])
-
-    def model_fn(model, data, eval=False):
-        with torch.set_grad_enabled(not eval):
-            inputs, labels = data
-            inputs = inputs.cuda(non_blocking=True)
-            labels = labels.cuda(non_blocking=True)
-            preds = model(inputs)
-            loss = criterion(preds, labels)
-            _, classes = torch.max(preds, 1)
-            acc = (classes == labels).float().sum() / labels.numel()
-            return ModelReturn(preds, loss, {"acc": acc.item(), 'loss': loss.item()})
-    return model_fn

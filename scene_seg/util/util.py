@@ -161,9 +161,9 @@ def colorize(gray, palette):
 
 
 def get_parser():
-    parser = argparse.ArgumentParser(description='PAConv: Point Cloud Semantic Segmentation')
-    parser.add_argument('--config', type=str, default='config/s3dis/s3dis_pointnet2_paconv.yaml', help='config file')
-    parser.add_argument('opts', help='see config/s3dis/s3dis_pointnet2_paconv.yaml for all options', default=None, nargs=argparse.REMAINDER)
+    parser = argparse.ArgumentParser(description='PointTransformer: Point Cloud Semantic Segmentation')
+    parser.add_argument('--config', type=str, default='config/s3dis/s3dis_point_transformer.yaml', help='config file')
+    parser.add_argument('opts', help='see config/s3dis/s3dis_point_transformer.yaml for all options', default=None, nargs=argparse.REMAINDER)
     args = parser.parse_args()
     assert args.config is not None
     cfg = config.load_cfg_from_cfg_file(args.config)

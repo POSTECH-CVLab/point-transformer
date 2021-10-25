@@ -29,10 +29,10 @@ def main():
     logger.info("Classes: {}".format(args.classes))
 
     if args.arch == 'point_transformer_seg':
-        from model.pointnet2.point_transformer_seg import PointTransformerSeg as Model
+        from model.point_transformer.point_transformer_seg import PointTransformerSeg as Model
     else:
         raise Exception('architecture not supported yet'.format(args.arch))
-    model = Model(c=args.fea_dim, k=args.classes, use_xyz=args.use_xyz, args=args)
+    model = Model(c=args.fea_dim, k=args.classes, args=args)
     model = torch.nn.DataParallel(model.cuda())
     logger.info(model)
     criterion = nn.CrossEntropyLoss(ignore_index=args.ignore_label).cuda()
