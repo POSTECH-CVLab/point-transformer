@@ -8,7 +8,7 @@ Point-Transformer PyTorch
 
 Updates
 -----
-* [2021.10.26] Add semantic segmentation on S3DIS Area 5 with the new codebas, `PAConv Pytorch repository <https://github.com/CVMI-Lab/PAConv>`_.
+* [2021.10.26] Add semantic segmentation on S3DIS Area 5 with the new codebase, `PAConv Pytorch repository <https://github.com/CVMI-Lab/PAConv>`_.
 
 
 Setup
