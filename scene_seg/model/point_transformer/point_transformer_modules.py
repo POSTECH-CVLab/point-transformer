@@ -88,8 +88,8 @@ class PointTransformerBlock(nn.Module):
         y += x
         y = self.relu(y)
         return [p, y]
-        
-    
+
+
 class TransitionDown(nn.Module):
     
     def __init__(self,
@@ -204,16 +204,18 @@ class SimplePointTransformerSeg(nn.Module):
         return xyz, features
         
     def forward(self, pc):
+        # stride == 1
         p1, x1 = self._break_up_pc(pc)
         x1 = self.in_mlp(x1)
         p1x1 = self.block1([p1, x1])
         
+        # stride == 4
         p4x4 = self.down(p1x1)
         p4x4 = self.block2(p4x4)
         
+        # stride == 1
         p1y = self.up(p4x4, p1x1)
         p1y = self.block3(p1y)
-        
         y = self.out_mlp(p1y[1])
         return y
 
