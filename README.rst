@@ -51,3 +51,9 @@ Model             mAcc      OA      mIoU
 Paper             76.5      90.8    70.4
 Our Implemention               
 ================  ========  ======  ======
+
+
+Acknowledments
+-----
+
+Our code is based on `PAConv Pytorch repository <https://github.com/CVMI-Lab/PAConv>`_.
