@@ -90,7 +90,7 @@ Our Implemention             83.2
 Model             mAcc      OA      mIoU
 ================  ========  ======  ======
 Paper             76.5      90.8    70.4
-Our Implemention               
+Our Implemention            88.0   
 ================  ========  ======  ======
 
 
