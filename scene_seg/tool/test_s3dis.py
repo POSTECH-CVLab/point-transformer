@@ -28,12 +28,8 @@ def main():
     logger.info("=> creating model ...")
     logger.info("Classes: {}".format(args.classes))
 
-    if args.arch == 'pointnet_seg':
-        from model.pointnet.pointnet import PointNetSeg as Model
-    elif args.arch == 'pointnet2_seg':
-        from model.pointnet2.pointnet2_seg import PointNet2SSGSeg as Model
-    elif args.arch == 'pointnet2_paconv_seg':
-        from model.pointnet2.pointnet2_paconv_seg import PointNet2SSGSeg as Model
+    if args.arch == 'point_transformer_seg':
+        from model.pointnet2.point_transformer_seg import PointTransformerSeg as Model
     else:
         raise Exception('architecture not supported yet'.format(args.arch))
     model = Model(c=args.fea_dim, k=args.classes, use_xyz=args.use_xyz, args=args)
