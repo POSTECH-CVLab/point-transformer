@@ -1,0 +1,10 @@
+
+.vscode/
+.empty/
+__pycache__/
+wandb/
+tensorboard/
+
+*.ply
+*.pyc
+*.png
