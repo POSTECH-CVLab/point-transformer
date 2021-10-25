@@ -65,5 +65,4 @@ If you use this code, please consider citing PAConv:
 ```
 
 ## Acknowledgement
-The code is partially borrowed from [PointWeb](https://github.com/hszhao/PointWeb).
-The code is heavily based on [PAConv](https://github.com/CVMI-Lab/PAConv).
+The code is partially borrowed from [PointWeb](https://github.com/hszhao/PointWeb) and heavily based on [PAConv](https://github.com/CVMI-Lab/PAConv).
