@@ -1,0 +1,15 @@
+MODEL:
+  num_matrices: [8, 8, 8, 8]
+  k_neighbors: 30
+  calc_scores: softmax
+  hidden: [[16,16,16],[16,16,16],[16,16,16],[16,16,16]]
+
+TEST:
+  exp_name: dgcnn_paconv_test
+  num_points: 2048
+  test_batch_size: 16
+  workers: 6
+  no_cuda: False
+  eval: True
+  dropout: 0.4
+  model_type: insiou  # choose to test the best insiou/clsiou/acc model

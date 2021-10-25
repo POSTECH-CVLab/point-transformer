@@ -1,0 +1,58 @@
+DATA:
+  data_name: s3dis
+  data_root: dataset/s3dis
+  train_list: dataset/s3dis/list/train12346.txt
+  train_full_folder: dataset/s3dis/trainval_fullarea
+  val_list: dataset/s3dis/list/val5.txt
+  test_area: 5
+  classes: 13
+  fea_dim: 6  # point feature dimension
+  block_size: 1.0
+  stride_rate: 0.5
+  sample_rate: 1.0
+  num_point: 4096  # point number [default: 4096]
+
+TRAIN:
+  arch: pointnet2_paconv_seg
+  use_xyz: True
+  sync_bn: True  # adopt sync_bn or not
+  ignore_label: 255
+  train_gpu: 
+  train_workers: 8  # data loader workers
+  train_batch_size: 16  # batch size for training
+  train_batch_size_val: 8 # batch size for validation during training, memory and speed tradeoff
+  base_lr: 0.05
+  epochs: 100
+  start_epoch: 0
+  step_epoch: 30
+  multiplier: 0.1
+  momentum: 0.9
+  weight_decay: 0.0001
+  manual_seed:
+  print_freq: 100
+  save_freq: 1
+  save_path: exp/s3dis/pointnet2_paconv/model
+  weight:  # path to initial weight (default: none)
+  resume:
+  evaluate: True  # evaluate on validation set, extra gpu memory needed and small batch_size_val is recommend
+  m: 16
+  paconv: [True, True, True, True, False, False, False, False]
+  score_input: ed7
+  kernel_input: neighbor
+  hidden: [16, 16, 16]
+  no_transformation: False
+  color_augment: 0.0
+  norm_no_trans: True
+  correlation_loss: True
+  correlation_loss_scale: 10.0
+
+TEST:
+  test_list: dataset/s3dis/list/val5.txt
+  test_list_full: dataset/s3dis/list/val5_full.txt
+  split: val  # split in [train, val and test]
+  test_gpu: [0]
+  test_workers: 4
+  test_batch_size: 8
+  model_path: exp/s3dis/pointnet2_paconv/model/best_train.pth
+  save_folder: exp/s3dis/pointnet2_paconv/result/best_epoch/val5_0.5  # results save folder
+  names_path: data/s3dis/s3dis_names.txt

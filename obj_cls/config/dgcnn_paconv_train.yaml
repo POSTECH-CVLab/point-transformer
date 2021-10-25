@@ -1,0 +1,19 @@
+MODEL:
+  arch: dgcnn  # backbone network architecture
+  num_matrices: [8, 8, 8, 8]
+  k_neighbors: 20  # number of knn
+  calc_scores: softmax
+
+
+TRAIN:
+  exp_name: dgcnn_paconv_train
+  num_points: 1024
+  pt_norm: False  # input normalization
+  batch_size: 32
+  test_batch_size: 16
+  epochs: 350
+  lr: 0.1
+  momentum: 0.9
+  eval: False
+  dropout: 0.5
+  no_cuda: False

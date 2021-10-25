@@ -1,0 +1,22 @@
+MODEL:
+  num_matrices: [8, 8, 8, 8]
+  k_neighbors: 30
+  calc_scores: softmax
+  hidden: [[16,16,16],[16,16,16],[16,16,16],[16,16,16]]
+
+TRAIN:
+  exp_name: dgcnn_paconv_train
+  num_points: 2048
+  batch_size: 32
+  test_batch_size: 16
+  workers: 6
+  epochs: 200
+  use_sgd: False  # use sgd or adam
+  lr: 0.003
+  momentum: 0.9
+  scheduler: step
+  no_cuda: False
+  eval: False
+  dropout: 0.4
+  step: 40  # lr decay step
+  weight_decay: 0

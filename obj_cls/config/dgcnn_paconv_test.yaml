@@ -1,0 +1,14 @@
+MODEL:
+  arch: dgcnn  # backbone network architecture
+  num_matrices: [8, 8, 8, 8]
+  k_neighbors: 20  # number of knn
+  calc_scores: softmax
+
+
+TEST:
+  exp_name: dgcnn_paconv_test
+  num_points: 1024
+  test_batch_size: 16
+  eval: True
+  dropout: 0.5
+  no_cuda: False
