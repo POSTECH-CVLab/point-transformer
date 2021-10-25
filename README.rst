@@ -3,7 +3,7 @@ Point-Transformer PyTorch
 
 * This is an unofficial implemention of `Point Transformer <https://arxiv.org/abs/2012.09164>`_.
 * We use `PAConv Pytorch repository <https://github.com/CVMI-Lab/PAConv>`_ which the first author of `Point Transformer <https://arxiv.org/abs/2012.09164>`_ has participated in for the codebase.
-* For k-nearest neighbor search with heap sort, please refer `PAConv Pytorch repository <https://github.com/CVMI-Lab/PAConv>`.
+* For k-nearest neighbor search with heap sort, please refer `PAConv Pytorch repository <https://github.com/CVMI-Lab/PAConv>`_.
 
 
 Setup
