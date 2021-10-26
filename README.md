@@ -1,17 +1,17 @@
-Point-Transformer PyTorch
+# Point-Transformer PyTorch
 ============================
 
-* This is an unofficial implemention of `Point Transformer <https://arxiv.org/abs/2012.09164>`_.
-* We use `PAConv repo <https://github.com/CVMI-Lab/PAConv>`_ which the first author of `Point Transformer <https://arxiv.org/abs/2012.09164>`_ has participated in for the codebase.
-* For k-nearest neighbor search with heap sort, please refer `PAConv repo <https://github.com/CVMI-Lab/PAConv>`_.
+* This is an unofficial implemention of [Point Transformer](https://arxiv.org/abs/2012.09164).
+* We use [PAConv repo](https://github.com/CVMI-Lab/PAConv) which the first author of [Point Transformer](https://arxiv.org/abs/2012.09164) has participated in for the codebase.
+* For k-nearest neighbor search with heap sort, please refer [PAConv repo](https://github.com/CVMI-Lab/PAConv).
 
 
-Updates
+## Updates
 -----
-* [2021.10.26] Add semantic segmentation on S3DIS Area 5 with the new codebase, `PAConv repo <https://github.com/CVMI-Lab/PAConv>`_.
+* [2021.10.26] Add semantic segmentation on S3DIS Area 5 with the new codebase, [PAConv repo](https://github.com/CVMI-Lab/PAConv).
 
 
-Setup
+## Setup
 -----
 * The code is tested on Ubuntu 20.04 and CUDA 11.1.
 * Install dependencies
@@ -21,13 +21,13 @@ Setup
     conda env create --file environment.yaml
 
 
-Training & Evaluation
+## Training & Evaluation
 ----------------
 
 Please check directories for classification, part segmentation, and scene segmentation.
 
 
-Experiment Results
+## Experiment Results
 ----------------------------------
 
 - Classification on ModelNet40
@@ -58,12 +58,12 @@ Our Implemention
 ================  ========  ======  ======
 
 
-Acknowledment
+## Acknowledment
 -----
-Our code is heavily based on `PAConv repo <https://github.com/CVMI-Lab/PAConv>`_.
+Our code is heavily based on [PAConv repo](https://github.com/CVMI-Lab/PAConv).
 
 
-Citations
+## Citations
 -----
 If you use this code, please consider citing Point Transformer and PAConv:
 ```
