@@ -51,7 +51,7 @@
 [comment]: <> (   - Video predictions: Youtube [LINK]&#40;&#41;.)
 
 
-## Citation
+## Citations
 
 If you use this code, please consider citing Point Transformer and PAConv:
 ```
@@ -62,6 +62,8 @@ If you use this code, please consider citing Point Transformer and PAConv:
   pages={16259--16268},
   year={2021}
 }
+```
+```
 @inproceedings{xu2021paconv,
   title={PAConv: Position Adaptive Convolution with Dynamic Kernel Assembling on Point Clouds},
   author={Xu, Mutian and Ding, Runyu and Zhao, Hengshuang and Qi, Xiaojuan},

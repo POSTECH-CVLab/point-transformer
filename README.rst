@@ -2,13 +2,13 @@ Point-Transformer PyTorch
 ============================
 
 * This is an unofficial implemention of `Point Transformer <https://arxiv.org/abs/2012.09164>`_.
-* We use `PAConv Pytorch repository <https://github.com/CVMI-Lab/PAConv>`_ which the first author of `Point Transformer <https://arxiv.org/abs/2012.09164>`_ has participated in for the codebase.
-* For k-nearest neighbor search with heap sort, please refer `PAConv Pytorch repository <https://github.com/CVMI-Lab/PAConv>`_.
+* We use `PAConv repo <https://github.com/CVMI-Lab/PAConv>`_ which the first author of `Point Transformer <https://arxiv.org/abs/2012.09164>`_ has participated in for the codebase.
+* For k-nearest neighbor search with heap sort, please refer `PAConv repo <https://github.com/CVMI-Lab/PAConv>`_.
 
 
 Updates
 -----
-* [2021.10.26] Add semantic segmentation on S3DIS Area 5 with the new codebase, `PAConv Pytorch repository <https://github.com/CVMI-Lab/PAConv>`_.
+* [2021.10.26] Add semantic segmentation on S3DIS Area 5 with the new codebase, `PAConv repo <https://github.com/CVMI-Lab/PAConv>`_.
 
 
 Setup
@@ -60,5 +60,26 @@ Our Implemention
 
 Acknowledment
 -----
+Our code is heavily based on `PAConv repo <https://github.com/CVMI-Lab/PAConv>`_.
 
-Our code is heavily based on `PAConv Pytorch repository <https://github.com/CVMI-Lab/PAConv>`_.
+
+Citations
+-----
+If you use this code, please consider citing Point Transformer and PAConv:
+```
+@inproceedings{zhao2021point,
+  title={Point transformer},
+  author={Zhao, Hengshuang and Jiang, Li and Jia, Jiaya and Torr, Philip HS and Koltun, Vladlen},
+  booktitle={Proceedings of the IEEE/CVF International Conference on Computer Vision},
+  pages={16259--16268},
+  year={2021}
+}
+```
+```
+@inproceedings{xu2021paconv,
+  title={PAConv: Position Adaptive Convolution with Dynamic Kernel Assembling on Point Clouds},
+  author={Xu, Mutian and Ding, Runyu and Zhao, Hengshuang and Qi, Xiaojuan},
+  booktitle={CVPR},
+  year={2021}
+}
+```
