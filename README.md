@@ -15,7 +15,9 @@
 * The code is tested on Ubuntu 20.04 and CUDA 11.1.
 * Install dependencies
 
-  `conda env create --file environment.yaml`
+  ```
+  conda env create --file environment.yaml
+  ```
 
 
 ## Training & Evaluation
