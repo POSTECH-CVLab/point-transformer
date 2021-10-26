@@ -30,14 +30,14 @@ Please check directories for classification, part segmentation, and scene segmen
 - Classification on ModelNet40
 
 |Model | mAcc | OA |
-|-------| ------| ----| -------|
+|-------| ------| -------|
 |Paper| 90.6 | 93.7 |
 |POSTECH Implemention |  |  |
 
 - Part Segmentation on ShapeNet
 
 |Model | cat. mIoU | ins. mIoU |
-|-------| ------| ----| -------|
+|-------| ------| -------|
 |Paper| 83.7 | 86.6 |
 |POSTECH Implemention |  |  |
 
