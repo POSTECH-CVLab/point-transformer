@@ -32,14 +32,14 @@ Please check directories for classification, part segmentation, and scene segmen
 |Model | mAcc | OA |
 |-------| ------| -------|
 |Paper| 90.6 | 93.7 |
-|POSTECH Implemention |  |  |
+|Our implemention |  |  |
 
 - Part Segmentation on ShapeNet
 
 |Model | cat. mIoU | ins. mIoU |
 |-------| ------| -------|
 |Paper| 83.7 | 86.6 |
-|POSTECH Implemention |  |  |
+|Our implemention |  |  |
 
 
 - Semantic Segmentation on S3DIS Area5
@@ -47,17 +47,16 @@ Please check directories for classification, part segmentation, and scene segmen
 |Model | mAcc | OA | mIoU |
 |-------| ------| ----| -------|
 |Paper| 76.5 | 90.8 | 70.4 |
-|POSTECH Implemention |  |  |  |
+|Our implemention |  |  |  |
 
 
 ## Acknowledment
------
 Our code is heavily based on [PAConv repo](https://github.com/CVMI-Lab/PAConv).
 
 
 ## Citations
 
-If you use this code, please consider citing Point Transformer and PAConv:
+If you use this code, please cite [Point Transformer](https://arxiv.org/abs/2012.09164) and [PAConv](https://arxiv.org/abs/2103.14635):
 ```
 @inproceedings{zhao2021point,
   title={Point transformer},
