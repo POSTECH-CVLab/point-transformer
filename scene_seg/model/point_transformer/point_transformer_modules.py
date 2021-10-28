@@ -104,9 +104,9 @@ class TransitionDown(nn.Module):
         self.out_channels = in_channels if out_channels is None else out_channels
         
         self.stride = stride
-        self.grouper = pointops.QueryAndGroup(nsample=num_neighbors, use_xyz=False)
+        self.grouper = pointops.QueryAndGroup(nsample=num_neighbors, use_xyz=True)
         self.mlp = nn.Sequential(
-            nn.Conv2d(in_channels, self.out_channels, kernel_size=1, bias=False),
+            nn.Conv2d(3 + in_channels, self.out_channels, kernel_size=1, bias=False),
             nn.BatchNorm2d(self.out_channels),
             nn.ReLU(inplace=True),
             nn.Conv2d(self.out_channels, self.out_channels, kernel_size=1, bias=False),
@@ -124,7 +124,7 @@ class TransitionDown(nn.Module):
         M = x.shape[-1] // self.stride
         p1_trans = p1.transpose(1, 2).contiguous() # (B, 3, N)
         p2 = pointops.gathering(p1_trans, pointops.furthestsampling(p1, M)).transpose(1, 2).contiguous()
-        n_x, _ = self.grouper(xyz=p1, new_xyz=p2, features=x) # (B, C_in, M, K)
+        n_x, _ = self.grouper(xyz=p1, new_xyz=p2, features=x) # (B, 3 + C_in, M, K)
         
         # mlp and local max pooling
         n_y = self.mlp(n_x) # (B, C_out, M, K)
