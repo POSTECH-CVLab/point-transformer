@@ -24,3 +24,4 @@ point_transformer/data/modelnet40_ply_hdf5_2048/
 point_transformer/models/test.py
 outputs/
 .vscode
+.DS_Store
