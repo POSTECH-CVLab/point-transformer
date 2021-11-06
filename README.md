@@ -26,23 +26,27 @@ The codebase is provided by the first author of [Point Transformer](https://arxi
      ```
 
 ## Usage
+- Shape classification on ModelNet40
+  - For now, please use paconv-codebase branch.
+- Part segmentation on ShapeNetPart
+  - For now, please use paconv-codebase branch.
+- Semantic segmantation on S3DIS Area 5
+  - Train
 
-- Train:
+    - Specify the gpu used in config and then do training:
 
-   - Specify the gpu used in config and then do training:
+      ```
+      sh tool/train.sh s3dis pointtransformer_repro
+      ```
 
-     ```
-     sh tool/train.sh s3dis pointtransformer_repro
-     ```
+  - Test
 
-- Test:
+    - Afer training, you can test the checkpoint as follows:
 
-   - Afer training, you can test the checkpoint as follows:
-
-     ```
-     CUDA_VISIBLE_DEVICES=0 sh tool/test.sh s3dis pointtransformer_repro
-     ```
----
+      ```
+      CUDA_VISIBLE_DEVICES=0 sh tool/test.sh s3dis pointtransformer_repro
+      ```
+  ---
 ## Experimental Results
 
 - Semanctic Segmentation on S3DIS Area 5
