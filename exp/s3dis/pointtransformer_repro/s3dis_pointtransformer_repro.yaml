@@ -1,0 +1,52 @@
+DATA:
+  data_name: s3dis
+  data_root: dataset/s3dis/trainval_fullarea
+  test_area: 5
+  classes: 13
+  fea_dim: 6
+  voxel_size: 0.04
+  voxel_max: 80000
+  loop: 30
+
+TRAIN:
+  arch: pointtransformer_seg_repro
+  use_xyz: True
+  sync_bn: False
+  ignore_label: 255
+  train_gpu: [0, 1, 2, 3]
+  workers: 16  # data loader workers
+  batch_size: 16  # batch size for training
+  batch_size_val: 4  # batch size for validation during training, memory and speed tradeoff
+  base_lr: 0.5
+  epochs: 100
+  start_epoch: 0
+  step_epoch: 30
+  multiplier: 0.1
+  momentum: 0.9
+  weight_decay: 0.0001
+  drop_rate: 0.5
+  manual_seed: 7777
+  print_freq: 1
+  save_freq: 1
+  save_path:
+  weight:  # path to initial weight (default: none)
+  resume:  # path to latest checkpoint (default: none)
+  evaluate: True  # evaluate on validation set, extra gpu memory needed and small batch_size_val is recommend
+  eval_freq: 1
+Distributed:
+  dist_url: tcp://localhost:8888
+  dist_backend: 'nccl'
+  multiprocessing_distributed: True
+  world_size: 1
+  rank: 0
+
+TEST:
+  test_list: dataset/s3dis/list/val5.txt
+  test_list_full: dataset/s3dis/list/val5_full.txt
+  split: val  # split in [train, val and test]
+  test_gpu: [0]
+  test_workers: 4
+  batch_size_test: 4
+  model_path:
+  save_folder:
+  names_path: data/s3dis/s3dis_names.txt
