@@ -3,7 +3,7 @@ This repository reproduces [Point Transformer](https://arxiv.org/abs/2012.09164)
 The codebase is provided by the first author of [Point Transformer](https://arxiv.org/abs/2012.09164).
 
 ## Notes
-- For shape classification and part segmentation, please use paconv-codebase branch. After some testing, we will merge it into master branch.
+- For shape classification and part segmentation, please use paconv-codebase branch. After some testing, we will merge it into the master branch.
 
 ---
 ## Dependencies
