@@ -18,7 +18,7 @@ The codebase is provided by the first author of [Point Transformer](https://arxi
   ```
 
 ## Dataset preparation
-- Download S3DIS [dataset](https://drive.google.com/file/d/1KUxWagmEWnvMhEb4FRwq2Mj0aa3U3xUf/view?usp=sharing) and symlink the paths to them as follows:
+- Download S3DIS [dataset](https://drive.google.com/uc?export=download&id=1KUxWagmEWnvMhEb4FRwq2Mj0aa3U3xUf) and symlink the paths to them as follows:
 
      ```
      mkdir -p dataset
