@@ -14,7 +14,7 @@ The codebase is provided by the first author of [Point Transformer](https://arxi
 - To create conda environment, command as follows:
 
   ```
-  sh env_setup.sh pt
+  bash env_setup.sh pt
   ```
 
 ## Dataset preparation
